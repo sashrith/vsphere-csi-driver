@@ -1405,13 +1405,18 @@ var _ = ginkgo.Describe("[csi-vcp-mig] VCP to CSI migration syncer tests", func(
 })
 
 //waitForCnsVSphereVolumeMigrationCrd waits for CnsVSphereVolumeMigration crd to be created for the given volume path
-func waitForCnsVSphereVolumeMigrationCrd(ctx context.Context,
-	vpath string) (*v1alpha1.CnsVSphereVolumeMigration, error) {
+func waitForCnsVSphereVolumeMigrationCrd(
+	ctx context.Context, vpath string, customTimeout ...time.Duration,
+) (*v1alpha1.CnsVSphereVolumeMigration, error) {
 	var (
 		found bool
 		crd   *v1alpha1.CnsVSphereVolumeMigration
 	)
-	waitErr := wait.PollImmediate(poll, pollTimeout, func() (bool, error) {
+	timeout := pollTimeout
+	if len(customTimeout) != 0 {
+		timeout = customTimeout[0]
+	}
+	waitErr := wait.PollImmediate(poll, timeout, func() (bool, error) {
 		found, crd = getCnsVSphereVolumeMigrationCrd(ctx, vpath)
 		return found, nil
 	})
@@ -1486,6 +1491,9 @@ func getCanonicalPath(vmdkPath string) string {
 func verifyCnsVolumeMetadataAndCnsVSphereVolumeMigrationCrdForPvcs(ctx context.Context,
 	client clientset.Interface, namespace string, pvcs []*v1.PersistentVolumeClaim) {
 	for _, pvc := range pvcs {
+		if namespace == "" {
+			namespace = pvc.Namespace
+		}
 		vpath := getvSphereVolumePathFromClaim(ctx, client, namespace, pvc.Name)
 		framework.Logf("Processing PVC: %s", pvc.Name)
 		pv := getPvFromClaim(client, namespace, pvc.Name)

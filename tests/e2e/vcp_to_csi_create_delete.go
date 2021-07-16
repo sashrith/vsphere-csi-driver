@@ -657,6 +657,9 @@ func waitForMigAnnotationsPvcPvLists(ctx context.Context, c clientset.Interface,
 	namespace string, pvcs []*v1.PersistentVolumeClaim, pvs []*v1.PersistentVolume, isMigratedVol bool) {
 	for i := 0; i < len(pvcs); i++ {
 		pvc := pvcs[i]
+		if namespace == "" {
+			namespace = pvc.Namespace
+		}
 		pvc, err := waitForPvcMigAnnotations(ctx, c, pvc.Name, namespace, isMigratedVol)
 		gomega.Expect(err).NotTo(gomega.HaveOccurred())
 		pvcs[i] = pvc
