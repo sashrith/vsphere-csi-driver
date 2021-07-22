@@ -708,6 +708,7 @@ func pvcHasMigAnnotations(ctx context.Context, c clientset.Interface, pvcName st
 	isMigratedToCsi := false
 	gomega.Expect(annotations).NotTo(gomega.BeNil(), "No annotations found on PVC "+pvcName)
 	for k, v := range annotations {
+		framework.Logf("Annotation %v:%v found on pvc %v", pvcName, k, v)
 		if isMigratedVol {
 			if k == pvcAnnotationStorageProvisioner && v == vcpProvisionerName {
 				isStorageProvisionerMatching = true
