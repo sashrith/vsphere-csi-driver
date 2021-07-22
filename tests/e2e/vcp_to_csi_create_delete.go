@@ -660,12 +660,14 @@ func waitForMigAnnotationsPvcPvLists(ctx context.Context, c clientset.Interface,
 		if namespace == "" {
 			namespace = pvc.Namespace
 		}
+		framework.Logf("Checking PVC %v", pvc.Name)
 		pvc, err := waitForPvcMigAnnotations(ctx, c, pvc.Name, namespace, isMigratedVol)
 		gomega.Expect(err).NotTo(gomega.HaveOccurred())
 		pvcs[i] = pvc
 	}
 	for i := 0; i < len(pvs); i++ {
 		pv := pvs[i]
+		framework.Logf("Checking PV %v", pv.Name)
 		pv, err := waitForPvMigAnnotations(ctx, c, pv.Name, isMigratedVol)
 		gomega.Expect(err).NotTo(gomega.HaveOccurred())
 		pvs[i] = pv

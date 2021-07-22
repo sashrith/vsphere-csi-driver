@@ -1494,6 +1494,7 @@ func verifyCnsVolumeMetadataAndCnsVSphereVolumeMigrationCrdForPvcs(ctx context.C
 		if namespace == "" {
 			namespace = pvc.Namespace
 		}
+		framework.Logf("Checking PVC %v", pvc.Name)
 		vpath := getvSphereVolumePathFromClaim(ctx, client, namespace, pvc.Name)
 		framework.Logf("Processing PVC: %s", pvc.Name)
 		pv := getPvFromClaim(client, namespace, pvc.Name)
