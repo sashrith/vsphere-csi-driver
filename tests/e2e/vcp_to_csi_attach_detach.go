@@ -34,7 +34,6 @@ import (
 	fnodes "k8s.io/kubernetes/test/e2e/framework/node"
 	fpod "k8s.io/kubernetes/test/e2e/framework/pod"
 	fpv "k8s.io/kubernetes/test/e2e/framework/pv"
-	fss "k8s.io/kubernetes/test/e2e/framework/statefulset"
 	"sigs.k8s.io/vsphere-csi-driver/pkg/apis/migration/v1alpha1"
 )
 
@@ -97,7 +96,7 @@ var _ = ginkgo.Describe("[csi-vcp-mig] VCP to CSI migration attach, detach tests
 	ginkgo.JustAfterEach(func() {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
-		fss.DeleteAllStatefulSets(client, namespace)
+
 		var pvcsToDelete []*v1.PersistentVolumeClaim
 		connect(ctx, &e2eVSphere)
 		if kcmMigEnabled {
