@@ -209,7 +209,7 @@ var (
 )
 
 // For VCP to CSI migration tests.
-var (
+const (
 	envSharedDatastoreName          = "SHARED_VSPHERE_DATASTORE_NAME"
 	vcpProvisionerName              = "kubernetes.io/vsphere-volume"
 	vcpScParamDatastoreName         = "datastore"
@@ -220,21 +220,24 @@ var (
 	pvcAnnotationStorageProvisioner = "volume.beta.kubernetes.io/storage-provisioner"
 	pvAnnotationProvisionedBy       = "pv.kubernetes.io/provisioned-by"
 	scAnnotation4Statefulset        = "volume.beta.kubernetes.io/storage-class"
-	nodeMapper                      = &NodeMapper{}
+)
+
+var (
+	nodeMapper = &NodeMapper{}
 )
 
 // For vsan stretched cluster tests
-var (
+const (
 	envTestbedInfoJsonPath = "TESTBEDINFO_JSON"
 )
 
 // CSI Internal FSSs
-var (
+const (
 	useCsiNodeID = "use-csinode-id"
 )
 
 // volume allocation types for cns volumes
-var (
+const (
 	thinAllocType = "Conserve space when possible"
 	eztAllocType  = "Fully initialized"
 	lztAllocType  = "Reserve space"
